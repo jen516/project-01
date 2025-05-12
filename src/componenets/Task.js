@@ -10,8 +10,15 @@ const Task = ({ task, setDraggedTask, openModal }) => {
       className="task"
       draggable
       onDragStart={handleDragStart}
-      onClick={() => openModal(task)}>
-      {task.title}
+      onClick={() => openModal(task)}
+    >
+      <strong>{task.title}</strong>
+      <p>{task.description}</p>
+      {task.assignedUser && (
+        <p style={{ fontSize: '0.8em', color: '#aaa' }}>
+          👤 Assigned to: {task.assignedUser}
+        </p>
+      )}
     </div>
   );
 };

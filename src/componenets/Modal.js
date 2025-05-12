@@ -6,6 +6,7 @@ const Modal = ({ isOpen, onClose, task, onSave, onDelete }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [selectedUser, setSelectedUser] = useState('Alex');
+  const [assignedUser, setAssignedUser] = useState('Alex');
   const [users, setUsers] = useState(['Alex', 'Ace', 'Luna']);
 
   useEffect(() => {
@@ -13,10 +14,12 @@ const Modal = ({ isOpen, onClose, task, onSave, onDelete }) => {
       setTitle(task.title || '');
       setDescription(task.description || '');
       setComments(task.comments || []);
+      setAssignedUser(task.assignedUser || 'Alex');
     } else {
       setTitle('');
       setDescription('');
       setComments([]);
+      setAssignedUser('Alex');
     }
   }, [task]);
 
@@ -30,11 +33,14 @@ const Modal = ({ isOpen, onClose, task, onSave, onDelete }) => {
           setUsers([...users, name]);
         }
         setSelectedUser(name);
+        setAssignedUser(name);
       } else {
         setSelectedUser('Alex');
+        setAssignedUser('Alex');
       }
     } else {
       setSelectedUser(value);
+      setAssignedUser(value);
     }
   };
 
@@ -46,62 +52,71 @@ const Modal = ({ isOpen, onClose, task, onSave, onDelete }) => {
   };
 
   const handleSave = () => {
-    onSave({ title, description, comments });
+    onSave({ title, description, comments, assignedUser });
   };
 
   return (
     <div className={`modal ${isOpen ? '' : 'hidden'}`}>
       <div className="modal-content">
-        <span className="close" onClick={onClose}>
-          ×
-        </span>
+        <span className="close" onClick={onClose}>×</span>
+
         <input
           type="text"
-          id="modalTitle"
           placeholder="Task Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
+
         <textarea
-          id="modalDescription"
           placeholder="Task Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
+
+        <label htmlFor="assignedUserSelect">Assign To:</label>
+        <select
+          id="assignedUserSelect"
+          value={assignedUser}
+          onChange={(e) => setAssignedUser(e.target.value)}
+        >
+          {users.map((user) => (
+            <option key={user} value={user}>{user}</option>
+          ))}
+          <option value="add-more">➕ Add more...</option>
+        </select>
+
         <div className="comment-section">
-          <label htmlFor="commentUserSelect">User:</label>
+          <label>User for Comment:</label>
           <select
-            id="commentUserSelect"
             value={selectedUser}
             onChange={handleUserChange}
           >
             {users.map((user) => (
-              <option key={user} value={user}>
-                {user}
-              </option>
+              <option key={user} value={user}>{user}</option>
             ))}
             <option value="add-more">➕ Add more...</option>
           </select>
+
           <input
             type="text"
-            id="newCommentInput"
             placeholder="Type a comment and press Enter"
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             onKeyPress={handleCommentKeyPress}
           />
-          <div id="commentsContainer" className="comments-feed">
+
+          <div className="comments-feed">
             {comments.map((comment, index) => (
               <div key={index} className="comment">
-                <strong>{comment.user}</strong>
-                {comment.text}
+                <strong>{comment.user}</strong>{comment.text}
               </div>
             ))}
           </div>
         </div>
+
         <div className="modal-actions">
           <button onClick={handleSave}>Save</button>
-          <button onClick={onDelete}>Delete</button>
+          {task && <button onClick={onDelete}>Delete</button>}
         </div>
       </div>
     </div>
