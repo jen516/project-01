@@ -10,8 +10,7 @@ const Task = ({ task, setDraggedTask, openModal }) => {
       className="task"
       draggable
       onDragStart={handleDragStart}
-      onClick={() => openModal(task)}
-    >
+      onClick={() => openModal(task)}>
       {task.title}
     </div>
   );

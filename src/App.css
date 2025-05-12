@@ -91,7 +91,7 @@ h2 {
 }
 
 textarea,
-input[type="text"] {
+input[type="text"], input[type="password"] {
   margin: 10px 0;
   padding: 10px;
   width: 100%;

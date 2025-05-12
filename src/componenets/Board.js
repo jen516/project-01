@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Column from './Column';
 import Modal from './Modal';
+import Navbar from './Navbar';
 
 const Board = () => {
   const [tasks, setTasks] = useState({ todo: [], inProgress: [], done: [] });
@@ -88,7 +89,11 @@ const Board = () => {
   };
 
   return (
+    <>
+    <Navbar></Navbar>
+ 
     <div className="board">
+
       <Column
         id="todo"
         title="To Do"
@@ -122,6 +127,7 @@ const Board = () => {
         onDelete={handleDeleteTask}
       />
     </div>
+    </>
   );
 };
 
