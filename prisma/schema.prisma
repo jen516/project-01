@@ -1,15 +1,64 @@
-  datasource db {
+  // datasource db {
+  //   provider = "mongodb"
+  //   url      = env("DATABASE_URL")
+  // }
+
+  // generator client {
+  //   provider = "prisma-client-js"
+  // // Add any additional models or enums as needed
+  //   output   = "../generated"
+  // }
+
+  // model User {
+  //   id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  //   createdAt DateTime @default(now())
+  //   email     String   @unique
+  //   username  String
+  //   password  String
+  //   role      Role     @default(USER)
+  //   tasks     Task[]   @relation("AssignedTasks")
+  //   comments  Comment[]
+  // }
+
+  // model Task {
+  //   id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  //   createdAt   DateTime   @default(now())
+  //   updatedAt   DateTime   @updatedAt
+  //   title       String
+  //   description String
+  //   columnId    String     // e.g. "todo", "inProgress", "done"
+  //   assignedTo  User?      @relation("AssignedTasks", fields: [assignedToId], references: [id])
+  //   assignedToId String?   @db.ObjectId
+  //   comments    Comment[]
+  // }
+
+  // model Comment {
+  //   id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  //   createdAt DateTime @default(now())
+  //   text      String
+  //   user      User     @relation(fields: [userId], references: [id])
+  //   userId    String   @db.ObjectId
+  //   task      Task     @relation(fields: [taskId], references: [id])
+  //   taskId    String   @db.ObjectId
+  // }
+
+  // enum Role {
+  //   USER
+  //   ADMIN
+  // }
+
+
+datasource db {
     provider = "mongodb"
     url      = env("DATABASE_URL")
-  }
+}
 
-  generator client {
+generator client {
     provider = "prisma-client-js"
-  // Add any additional models or enums as needed
     output   = "../generated"
-  }
+}
 
-  model User {
+model User {
     id        String   @id @default(auto()) @map("_id") @db.ObjectId
     createdAt DateTime @default(now())
     email     String   @unique
@@ -18,9 +67,9 @@
     role      Role     @default(USER)
     tasks     Task[]   @relation("AssignedTasks")
     comments  Comment[]
-  }
+}
 
-  model Task {
+model Task {
     id          String     @id @default(auto()) @map("_id") @db.ObjectId
     createdAt   DateTime   @default(now())
     updatedAt   DateTime   @updatedAt
@@ -29,20 +78,20 @@
     columnId    String     // e.g. "todo", "inProgress", "done"
     assignedTo  User?      @relation("AssignedTasks", fields: [assignedToId], references: [id])
     assignedToId String?   @db.ObjectId
-    comments    Comment[]
-  }
+    comments    Comment[]  @relation("TaskComments")
+}
 
-  model Comment {
+model Comment {
     id        String   @id @default(auto()) @map("_id") @db.ObjectId
     createdAt DateTime @default(now())
     text      String
     user      User     @relation(fields: [userId], references: [id])
     userId    String   @db.ObjectId
-    task      Task     @relation(fields: [taskId], references: [id])
+    task      Task     @relation("TaskComments", fields: [taskId], references: [id], onDelete: Cascade)
     taskId    String   @db.ObjectId
-  }
+}
 
-  enum Role {
+enum Role {
     USER
     ADMIN
-  }
+}
