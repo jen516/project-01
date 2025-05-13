@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterUser = () => {
+  const navigator = useNavigate();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -32,6 +34,7 @@ const RegisterUser = () => {
       if (response.ok) {
         setMessage('User registered successfully!');
         setFormData({ username: '', email: '', password: '', role: 'USER' });
+        navigator('/login');
       } else {
         const errorData = await response.json();
         setMessage(errorData.error || 'Failed to register user');
@@ -84,6 +87,9 @@ const RegisterUser = () => {
         </select>
         <br /><br />
         <button type="submit" style={styles.button}>Register</button>
+        <br /><br />    
+        <h2 style={{ textAlign: 'center' }}>OR</h2>
+        <button type="button" onClick={() => navigator('/login')} style={styles.button}>Login</button>
       </form>
       {message && <p>{message}</p>}
     </div>

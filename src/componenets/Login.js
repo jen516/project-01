@@ -73,6 +73,10 @@ const Login = () => {
           }}
         />
       </GoogleOAuthProvider>
+        <p style={{ textAlign: 'center' }}>
+          Don't have an account? <a href="/register">Register</a>
+        </p>
+  
       </form>
 
      
